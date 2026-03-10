@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TabConfig } from './tab-config.entity';
+
+// Mock data for tabs
+const mockTabs = [
+  { id: 1, key: 'projects', label: '作品', order: 1, enabled: true },
+  { id: 2, key: 'articles', label: '文章', order: 2, enabled: true },
+  { id: 3, key: 'plugins', label: '插件', order: 3, enabled: true },
+];
 
 @Injectable()
 export class TabsService {
-  constructor(
-    @InjectRepository(TabConfig)
-    private readonly tabsRepo: Repository<TabConfig>,
-  ) {}
-
-  findAll(): Promise<TabConfig[]> {
-    return this.tabsRepo.find({
-      where: { enabled: true },
-      order: { order: 'ASC' },
-    });
+  findAll(): Promise<any[]> {
+    return Promise.resolve(mockTabs.filter(tab => tab.enabled));
   }
 
-  async saveAll(tabs: TabConfig[]): Promise<TabConfig[]> {
-    await this.tabsRepo.clear();
-    return this.tabsRepo.save(tabs);
+  async saveAll(tabs: any[]): Promise<any[]> {
+    mockTabs.length = 0;
+    tabs.forEach((tab, index) => {
+      mockTabs.push({
+        id: index + 1,
+        ...tab,
+      });
+    });
+    return Promise.resolve(mockTabs);
   }
 }
