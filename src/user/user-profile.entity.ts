@@ -5,16 +5,16 @@ export class UserProfile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   avatarUrl: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   logoUrl: string | null;
 
-  @Column({ length: 100 })
+  @Column({ type: 'varchar', length: 100 })
   displayName: string;
 
-  @Column({ length: 200, nullable: true })
+  @Column({ type: 'varchar', length: 200, nullable: true })
   introTitle: string | null;
 
   @Column({ type: 'text', nullable: true })
