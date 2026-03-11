@@ -21,16 +21,12 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  getArticle(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Article> {
+  getArticle(@Param('id', ParseIntPipe) id: number): Promise<Article> {
     return this.articlesService.getOrFail(id);
   }
 
   @Post()
-  createArticle(
-    @Body() data: Partial<Article>,
-  ): Promise<Article> {
+  createArticle(@Body() data: Partial<Article>): Promise<Article> {
     return this.articlesService.create(data);
   }
 
@@ -43,9 +39,7 @@ export class ArticlesController {
   }
 
   @Delete(':id')
-  deleteArticle(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<void> {
+  deleteArticle(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.articlesService.remove(id);
   }
 }

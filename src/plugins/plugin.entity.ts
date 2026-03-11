@@ -42,4 +42,3 @@ export class Plugin {
   })
   updatedAt: Date;
 }
-

@@ -20,6 +20,12 @@ export class UserProfile {
   @Column({ type: 'text', nullable: true })
   introContent: string | null;
 
+  @Column({ type: 'int', default: 0 })
+  age: number;
+
+  @Column({ type: 'simple-json', nullable: true })
+  hobbies: string[] | null;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
@@ -30,4 +36,3 @@ export class UserProfile {
   })
   updatedAt: Date;
 }
-

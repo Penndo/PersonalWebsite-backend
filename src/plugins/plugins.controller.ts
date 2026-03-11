@@ -21,16 +21,12 @@ export class PluginsController {
   }
 
   @Get(':id')
-  getPlugin(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Plugin> {
+  getPlugin(@Param('id', ParseIntPipe) id: number): Promise<Plugin> {
     return this.pluginsService.getOrFail(id);
   }
 
   @Post()
-  createPlugin(
-    @Body() data: Partial<Plugin>,
-  ): Promise<Plugin> {
+  createPlugin(@Body() data: Partial<Plugin>): Promise<Plugin> {
     return this.pluginsService.create(data);
   }
 
@@ -43,9 +39,7 @@ export class PluginsController {
   }
 
   @Delete(':id')
-  deletePlugin(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<void> {
+  deletePlugin(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.pluginsService.remove(id);
   }
 }

@@ -21,16 +21,12 @@ export class ProjectsController {
   }
 
   @Get(':id')
-  getProject(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Project> {
+  getProject(@Param('id', ParseIntPipe) id: number): Promise<Project> {
     return this.projectsService.getOrFail(id);
   }
 
   @Post()
-  createProject(
-    @Body() data: Partial<Project>,
-  ): Promise<Project> {
+  createProject(@Body() data: Partial<Project>): Promise<Project> {
     return this.projectsService.create(data);
   }
 
@@ -43,9 +39,7 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  deleteProject(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<void> {
+  deleteProject(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.projectsService.remove(id);
   }
 }

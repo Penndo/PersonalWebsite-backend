@@ -12,9 +12,8 @@ export class TabConfig {
   label: string;
 
   @Column({ type: 'int', default: 0 })
-  "order": number;
+  'order': number;
 
   @Column({ type: 'boolean', default: true })
   enabled: boolean;
 }
-

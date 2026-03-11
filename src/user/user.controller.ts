@@ -1,21 +1,20 @@
 import { Body, Controller, Get, Put } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserProfile } from './user-profile.entity';
+import { UserService, UserInfoDto } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('profile')
-  getProfile(): Promise<UserProfile | null> {
+  getProfile(): Promise<UserInfoDto> {
     return this.userService.getProfile();
   }
 
   @Put('profile')
   updateProfile(
     @Body()
-    payload: Partial<UserProfile>,
-  ): Promise<UserProfile> {
+    payload: Partial<UserInfoDto>,
+  ): Promise<UserInfoDto> {
     return this.userService.upsertProfile(payload);
   }
 }
