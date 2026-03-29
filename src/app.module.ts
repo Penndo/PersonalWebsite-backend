@@ -9,6 +9,7 @@ import { TabsModule } from './tabs/tabs.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ArticlesModule } from './articles/articles.module';
 import { PluginsModule } from './plugins/plugins.module';
+import { UploadModule } from './upload/upload.module';
 import { UserProfile } from './user/user-profile.entity';
 import { TabConfig } from './tabs/tab-config.entity';
 import { Project } from './projects/project.entity';
@@ -61,6 +62,7 @@ import { Plugin } from './plugins/plugin.entity';
     ProjectsModule,
     ArticlesModule,
     PluginsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
