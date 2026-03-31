@@ -10,11 +10,13 @@ import { ProjectsModule } from './projects/projects.module';
 import { ArticlesModule } from './articles/articles.module';
 import { PluginsModule } from './plugins/plugins.module';
 import { UploadModule } from './upload/upload.module';
+import { RecommendationModule } from './recommendations/recommendation.module';
 import { UserProfile } from './user/user-profile.entity';
 import { TabConfig } from './tabs/tab-config.entity';
 import { Project } from './projects/project.entity';
 import { Article } from './articles/article.entity';
 import { Plugin } from './plugins/plugin.entity';
+import { Recommendation } from './recommendations/recommendation.entity';
 
 @Module({
   imports: [
@@ -40,7 +42,7 @@ import { Plugin } from './plugins/plugin.entity';
             password: configService.get<string>('DB_PASS') ?? '',
             database:
               configService.get<string>('DB_NAME') ?? 'personal_website',
-            entities: [UserProfile, TabConfig, Project, Article, Plugin],
+            entities: [UserProfile, TabConfig, Project, Article, Plugin, Recommendation],
             synchronize: nodeEnv !== 'production',
           } satisfies TypeOrmModuleOptions;
         }
@@ -52,7 +54,7 @@ import { Plugin } from './plugins/plugin.entity';
           username: configService.get<string>('DB_USER') ?? 'root',
           password: configService.get<string>('DB_PASS') ?? '',
           database: configService.get<string>('DB_NAME') ?? 'personal_website',
-          entities: [UserProfile, TabConfig, Project, Article, Plugin],
+          entities: [UserProfile, TabConfig, Project, Article, Plugin, Recommendation],
           synchronize: nodeEnv !== 'production',
         } satisfies TypeOrmModuleOptions;
       },
@@ -63,6 +65,7 @@ import { Plugin } from './plugins/plugin.entity';
     ArticlesModule,
     PluginsModule,
     UploadModule,
+    RecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
