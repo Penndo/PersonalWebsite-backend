@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 
@@ -11,5 +11,11 @@ export class UploadController {
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     const url = await this.uploadService.uploadFile(file);
     return { url };
+  }
+
+  @Post('remove')
+  async remove(@Body() body: { url: string }) {
+    this.uploadService.deleteByPublicUrl(body?.url || '');
+    return { ok: true };
   }
 }
