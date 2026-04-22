@@ -11,6 +11,16 @@ export class UserProfile {
   @Column({ type: 'varchar', length: 255, nullable: true })
   logoUrl: string | null;
 
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  phone: string | null;
+
+  /** 作品集 PDF 等文件 URL（通常为 /uploads/...） */
+  @Column({ type: 'varchar', length: 512, nullable: true })
+  portfolio: string | null;
+
+  @Column({ type: 'varchar', length: 512, nullable: true })
+  wechatQRCode: string | null;
+
   @Column({ type: 'varchar', length: 100 })
   displayName: string;
 

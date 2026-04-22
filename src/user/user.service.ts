@@ -10,6 +10,9 @@ export interface UserInfoDto {
   hobbies: string[];
   avatar: string;
   introduction: string;
+  phone: string;
+  portfolio: string;
+  wechatQRCode: string;
 }
 
 @Injectable()
@@ -45,6 +48,9 @@ export class UserService {
       hobbies: profile.hobbies ?? [],
       avatar: profile.avatarUrl ?? '',
       introduction: profile.introContent ?? '',
+      phone: profile.phone ?? '',
+      portfolio: profile.portfolio ?? '',
+      wechatQRCode: profile.wechatQRCode ?? '',
     };
   }
 
@@ -72,6 +78,10 @@ export class UserService {
     if (payload.avatar !== undefined) existing.avatarUrl = payload.avatar;
     if (typeof payload.age === 'number') existing.age = payload.age;
     if (Array.isArray(payload.hobbies)) existing.hobbies = payload.hobbies;
+    if (payload.phone !== undefined) existing.phone = payload.phone || null;
+    if (payload.portfolio !== undefined) existing.portfolio = payload.portfolio || null;
+    if (payload.wechatQRCode !== undefined)
+      existing.wechatQRCode = payload.wechatQRCode || null;
 
     const saved = await this.userProfileRepository.save(existing);
     return {
@@ -81,6 +91,9 @@ export class UserService {
       hobbies: saved.hobbies ?? [],
       avatar: saved.avatarUrl ?? '',
       introduction: saved.introContent ?? '',
+      phone: saved.phone ?? '',
+      portfolio: saved.portfolio ?? '',
+      wechatQRCode: saved.wechatQRCode ?? '',
     };
   }
 }
