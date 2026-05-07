@@ -4,7 +4,8 @@ import { join, extname } from 'path';
 
 @Injectable()
 export class UploadService {
-  private readonly uploadDir = join(process.cwd(), '..', 'public', 'uploads');
+  private readonly uploadDir =
+    process.env.UPLOAD_DIR || join(process.cwd(), '..', 'public', 'uploads');
 
   constructor() {
     // Create upload directory if it doesn't exist
