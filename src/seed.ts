@@ -6,6 +6,7 @@ import { TabConfig } from './tabs/tab-config.entity';
 import { Project } from './projects/project.entity';
 import { Article } from './articles/article.entity';
 import { Plugin } from './plugins/plugin.entity';
+import { AdminCredential } from './auth/admin-credential.entity';
 
 config();
 
@@ -20,7 +21,7 @@ const dataSource = new DataSource({
   username: process.env.DB_USER ?? 'root',
   password: process.env.DB_PASS ?? '',
   database: process.env.DB_NAME ?? 'personal_website',
-  entities: [UserProfile, TabConfig, Project, Article, Plugin],
+  entities: [UserProfile, TabConfig, Project, Article, Plugin, AdminCredential],
   synchronize: true,
 });
 
