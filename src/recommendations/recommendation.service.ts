@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Recommendation } from './recommendation.entity';
+
+const VALID_ITEM_TYPES = ['project', 'article', 'plugin'];
 
 @Injectable()
 export class RecommendationService {
   constructor(
     @InjectRepository(Recommendation)
     private recommendationRepository: Repository<Recommendation>,
+    private dataSource: DataSource,
   ) {}
 
   async findAll(): Promise<Recommendation[]> {
@@ -36,19 +39,42 @@ export class RecommendationService {
   }
 
   async deleteAll(): Promise<void> {
-    await this.recommendationRepository.clear();
+    await this.recommendationRepository.createQueryBuilder().delete().execute();
   }
 
   async saveMultiple(recommendations: Partial<Recommendation>[]): Promise<Recommendation[]> {
-    // 先删除所有现有推荐
-    await this.deleteAll();
-    // 保存新的推荐
-    const newRecommendations = recommendations.map((rec, index) => {
-      return this.recommendationRepository.create({
-        ...rec,
-        order: index + 1,
+    if (!Array.isArray(recommendations)) {
+      throw new BadRequestException('请求数据格式错误，应为数组');
+    }
+
+    for (let i = 0; i < recommendations.length; i++) {
+      const rec = recommendations[i];
+      if (!rec.itemId || !rec.title || !rec.itemType) {
+        throw new BadRequestException(
+          `第 ${i + 1} 项推荐缺少必填字段（itemId、title、itemType）`,
+        );
+      }
+      if (!VALID_ITEM_TYPES.includes(rec.itemType)) {
+        throw new BadRequestException(
+          `第 ${i + 1} 项推荐的 itemType 无效："${rec.itemType}"，应为 project/article/plugin`,
+        );
+      }
+    }
+
+    try {
+      return await this.dataSource.transaction(async (manager) => {
+        await manager.createQueryBuilder().delete().from(Recommendation).execute();
+        const newRecommendations = recommendations.map((rec, index) =>
+          manager.create(Recommendation, {
+            ...rec,
+            order: index + 1,
+          }),
+        );
+        return manager.save(newRecommendations);
       });
-    });
-    return this.recommendationRepository.save(newRecommendations);
+    } catch (error) {
+      console.error('保存推荐内容失败:', error);
+      throw error;
+    }
   }
 }
