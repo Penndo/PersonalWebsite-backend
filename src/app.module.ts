@@ -2,6 +2,22 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
+
+/** Always `backend/` (works whether the process cwd is repo root or `backend/`) */
+const backendRoot = join(__dirname, '..');
+
+function backendEnvFilePaths(): string[] {
+  const isProduction =
+    (process.env.NODE_ENV ?? 'development').toLowerCase() === 'production';
+  const paths = [join(backendRoot, '.env')];
+  if (!isProduction) {
+    paths.push(
+      join(backendRoot, '.env.development.local'),
+      join(backendRoot, '.env.local'),
+    );
+  }
+  return paths;
+}
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -24,10 +40,7 @@ import { AdminCredential } from './auth/admin-credential.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        join(process.cwd(), '.env'),
-        join(process.cwd(), 'backend', '.env'),
-      ],
+      envFilePath: backendEnvFilePaths(),
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

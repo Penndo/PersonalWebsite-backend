@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
+import { join } from 'path';
 import { UserProfile } from './user/user-profile.entity';
 import { TabConfig } from './tabs/tab-config.entity';
 import { Project } from './projects/project.entity';
@@ -8,7 +9,15 @@ import { Article } from './articles/article.entity';
 import { Plugin } from './plugins/plugin.entity';
 import { AdminCredential } from './auth/admin-credential.entity';
 
-config();
+const backendRoot = join(__dirname, '..');
+const isProduction =
+  (process.env.NODE_ENV ?? 'development').toLowerCase() === 'production';
+
+config({ path: join(backendRoot, '.env') });
+if (!isProduction) {
+  config({ path: join(backendRoot, '.env.development.local'), override: true });
+  config({ path: join(backendRoot, '.env.local'), override: true });
+}
 
 const dataSource = new DataSource({
   type: (process.env.DB_TYPE as 'mysql' | 'postgres') ?? 'mysql',
